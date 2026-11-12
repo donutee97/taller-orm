@@ -11,7 +11,7 @@
 </head>
 <body class="container mt-5">
     <div class="d-flex flex-column align-items-center">
-        <h2 class="text-center mb-5">Actualizar cuenta #{{ cuenta.tipo_cuenta }}</h2>
+        <h2 class="text-center mb-5">(Cambio desde rama)Actualizar cuenta #{{ cuenta.tipo_cuenta }}</h2>
         <!-- El formulario envía los datos mediante POST a la misma URL -->
         <form method="POST" action="{% url 'actualizar_cuenta' cuenta.id %}" class="card p-10 shadow-sm mb-4" style="width: 100%; max-width: 500px;">
             {% csrf_token %}
