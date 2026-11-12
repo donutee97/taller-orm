@@ -1,0 +1,75 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="es-co" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.:Cuenta:.</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.2/font/bootstrap-icons.min.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL" crossorigin="anonymous"></script>
+</head>
+<body class="container mt-5">
+    <div class="d-flex flex-column align-items-center">
+    
+        <!-- El formulario envía los datos mediante POST a la misma URL -->
+        <form method="POST" action="{% url 'registrar_cuenta' %}" class="card p-10 shadow-sm mb-4" style="width: 100%; max-width: 500px;">
+
+            <h2 class="text-center mb-10">Registrar Nueva Cuenta</h2>
+            {% csrf_token %}
+            
+            <label class="form-label">Tipo Cuenta (Número):</label>
+            <input type="number" class="form-control mb-1" name="txtTipoCuenta" required>
+            <div class="form-text mb-5">Ingresa tu número de cuenta</div>
+
+            <label class="form-label">Descripción:</label>
+            <input type="text" class="form-control mb-1" name="txtDescripcion" required>
+            <div class="form-text mb-5">Ejemplo: Cuenta de Ahorros, Cuenta Corriente, Cuenta de Inversión</div>
+
+            <label class="form-label">Saldo Inicial:</label>
+            <input type="number" step="0.01" class="form-control mb-1" name="txtSaldo" required>
+            <div class="form-text mb-6">Ingresa el saldo inicial de la cuenta</div>
+
+            <button type="submit" class="btn-solid btn-styled theme-primary btn-lg px-4">Guardar Cuenta</button>
+        </form>
+
+        <hr class="my-5" style="width: 100%; max-width: 500px;">
+
+        <h2 class="text-center mb-5">Lista de Cuentas</h2>
+
+        <div class="table-responsive rounded-4 overflow-hidden border mb-10" style="width: 100%; max-width: 500px;">
+            <table border="1" class="table table-striped table-hover table-bordered shadow-sm text-center align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo Cuenta</th>
+                        <th>Descripción</th>
+                        <th>Saldo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="justify-content-center table-group-divider">
+                    {% for cuenta in cuentas %}
+                    <tr>
+                        <td>{{ cuenta.id }}</i></td>
+                        <td>{{ cuenta.tipo_cuenta }}</td>
+                        <td>{{ cuenta.descripcion }}</td>
+                        <td>$ {{ cuenta.saldo|floatformat:0|intcomma }}</td>
+                        <td>
+                            <div class="d-flex gap-2 justify-content-evenly">
+                                <a href="{% url 'actualizar_cuenta' cuenta.id %}" class="btn-solid theme-primary btn-sm md-2"><i class="bi bi-pencil-square"></i></a>
+                                <a href="{% url 'eliminar_cuenta' cuenta.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar esta cuenta?');" class="btn-solid theme-danger btn-sm"><i class="bi bi-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No hay cuentas registradas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
